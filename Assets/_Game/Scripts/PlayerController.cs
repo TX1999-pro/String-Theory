@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
     public void Move(InputAction.CallbackContext context)
     {
         horizontalInput = context.ReadValue<Vector2>().x;
+        //test update
     }
     public void Jump(InputAction.CallbackContext context)
     {
