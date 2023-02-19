@@ -10,13 +10,14 @@ public class PlayerController : MonoBehaviour
     private Rigidbody player;
     [SerializeField] private bool isGrounded;
     public float setJumpForce =5.0f;
-    private float jumpForce;
+    [HideInInspector] public float jumpForce;
     public int superJumpsRemain = 0;
-    [SerializeField] private Transform groundCheckCollider;
-    [SerializeField] private LayerMask groundLayer;
+    public Transform groundCheckCollider;
+    public LayerMask groundLayer;
 
     public PlayerInputActions playerControls;
     public float moveSpeed = 5;
+
     private InputAction move;
     private InputAction jump;
 
@@ -35,6 +36,8 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         //playerControls.Enable();
+        
+        // by events
         move = playerControls.Player.Move;
         move.Enable();
         jump = playerControls.Player.Jump;
@@ -67,8 +70,13 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        // update player movement
         player.velocity = new Vector3(horizontalInput * moveSpeed, player.velocity.y, 0);
+        // restart if below certain position
+        if (player.position.y < -5f)
+        {
+            FindObjectOfType<GameManager>().EndGame();
+        }
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -80,7 +88,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed && IsGrounded())
         {
-            Debug.Log("Jumped!");
+            //Debug.Log("Jumped!");
             if (superJumpsRemain > 0)
             {
                 jumpForce = 2* setJumpForce;
@@ -106,11 +114,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 10)
+        if (other.gameObject.layer == 10) // layer 10 is coin
         {
             Destroy(other.gameObject);
             superJumpsRemain += 1;
+            //GameManager.instance.IncreaseScore(1);
+        }
+
+        if (other.gameObject.tag == "Portal")
+        {
+            Debug.Log("Entering the portal");
         }
     }
+
+
 
 }
