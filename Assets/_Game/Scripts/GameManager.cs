@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         {
             gameHasEnded = true;
             Debug.Log("Game Over!");
-            Invoke("RestartGame", restartDelay); // delay restart
+            Invoke(nameof(RestartGame), restartDelay); // delay restart
         }
     }
 

@@ -16,16 +16,18 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheckCollider;
     public LayerMask groundLayer;
 
-    public PlayerInputActions1 playerControls;
+    public PlayerInputActions1 gameInput;
     public float moveSpeed = 5;
 
     private InputAction move;
     private InputAction jump;
-    private InputAction toggleMicrophone;
+    private InputAction toggleMic;
+
+    public bool voiceActionEnabled = false;
 
     private void Awake()
     {
-        playerControls = new PlayerInputActions1();
+        gameInput = new PlayerInputActions1();
 
         //playerControls.Player.HorizontalMove.performed += ctx =>
         //{
@@ -36,21 +38,24 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        //playerControls.Enable();
+        //gameInput.Enable();
         
         // by events
-        move = playerControls.Player.Move;
+        move = gameInput.Player.Move;
         move.Enable();
-        jump = playerControls.Player.Jump;
+        jump = gameInput.Player.Jump;
         jump.Enable();
+        toggleMic = gameInput.Player.ToggleMic;
+        toggleMic.Enable();
 
     }
 
     private void OnDisable()
     {
-        //playerControls.Disable();
+        //gameInput.Disable();
         move.Disable();
         jump.Disable();
+        toggleMic.Disable();
     }
 
     void Start()
@@ -62,13 +67,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // oringial implementation
-        //if (Input.GetButtonDown("Jump"))
-        //{
-        //    jumpKeyWasPressed = true;
-        //}
 
-        //horizontalInput = Input.GetAxis("Horizontal");
     }
 
     private void FixedUpdate()
@@ -94,7 +93,7 @@ public class PlayerController : MonoBehaviour
     public void Move(InputAction.CallbackContext context)
     {
         horizontalInput = context.ReadValue<Vector2>().x;
-        //test update
+        Debug.Log(horizontalInput);
     }
     public void Jump(InputAction.CallbackContext context)
     {
@@ -113,6 +112,17 @@ public class PlayerController : MonoBehaviour
             player.velocity += Vector3.up * jumpForce;
             //player.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
             //player.velocity = new Vector3(horizontalInput, player.velocity.y, 0);
+        }
+    }
+
+    public void ToggleMic(InputAction.CallbackContext btn)
+    {
+
+        if (btn.started)
+        {
+            // turn on
+            voiceActionEnabled = !voiceActionEnabled;
+            Debug.Log("Voice Action Enable? : " + voiceActionEnabled.ToString());
         }
     }
 

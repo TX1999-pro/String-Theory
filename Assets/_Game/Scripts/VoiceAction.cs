@@ -14,30 +14,10 @@ public class VoiceAction : MonoBehaviour
 
     // character & player control
     [SerializeField] private PlayerController playerController;
-    public bool voiceActionEnabled = false;
     private float horizontalInput;
     private Rigidbody player;
 
     public float moveSpeed = 3.0f;
-    public PlayerInputActions1 playerControls;
-    private InputAction toggleMicrophone;
-
-    private void Awake()
-    {
-        playerControls = GetComponent<PlayerController>().playerControls;
-
-    }
-    private void OnEnable()
-    {
-        toggleMicrophone = playerControls.Player.ToggleMic;
-        toggleMicrophone.Enable();
-
-    }
-
-    private void OnDisable()
-    {
-        toggleMicrophone.Disable();
-    }
 
     private void Start()
     {
@@ -60,25 +40,10 @@ public class VoiceAction : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (voiceActionEnabled)
-        {
-            player.velocity = new Vector3(horizontalInput * playerController.moveSpeed, player.velocity.y, 0);
-        }
+        player.velocity = new Vector3(horizontalInput * playerController.moveSpeed, player.velocity.y, 0);
         
     }
 
-    public void ToggleMic(InputAction.CallbackContext context)
-    {
-        voiceActionEnabled = !voiceActionEnabled;
-        if (voiceActionEnabled)
-        {
-            Debug.Log("Mic On, listening");
-        }
-        else
-        {
-            Debug.Log("Mic Off.");
-        }
-    }
 
     private void OnDestroy()
     {
@@ -91,8 +56,16 @@ public class VoiceAction : MonoBehaviour
 
     private void RecognizedSpeech(PhraseRecognizedEventArgs speech)
     {
-        Debug.Log(speech.text);
-        actions[speech.text].Invoke();
+        if (playerController.voiceActionEnabled)
+        {
+            Debug.Log(speech.text);
+            actions[speech.text].Invoke();
+        }
+        else
+        {
+            Debug.Log("Press L to turn on the Listener.");
+        }
+
     }
     public void Jump()
     {
@@ -108,7 +81,7 @@ public class VoiceAction : MonoBehaviour
             {
                 playerController.jumpForce = playerController.setJumpForce;
             }
-            player.AddForce(Vector3.up * playerController.jumpForce, ForceMode.VelocityChange);
+            player.AddForce(Vector3.up * playerController.jumpForce, ForceMode.Impulse);
         }
     }
 
