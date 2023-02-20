@@ -5,26 +5,27 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private bool jumpKeyWasPressed;
     private float horizontalInput;
     private Rigidbody player;
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private bool isGrounded;
+
     public float setJumpForce =5.0f;
     [HideInInspector] public float jumpForce;
     public int superJumpsRemain = 0;
     public Transform groundCheckCollider;
     public LayerMask groundLayer;
 
-    public PlayerInputActions playerControls;
+    public PlayerInputActions1 playerControls;
     public float moveSpeed = 5;
 
     private InputAction move;
     private InputAction jump;
-
+    private InputAction toggleMicrophone;
 
     private void Awake()
     {
-        playerControls = new PlayerInputActions();
+        playerControls = new PlayerInputActions1();
 
         //playerControls.Player.HorizontalMove.performed += ctx =>
         //{
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour
         move.Enable();
         jump = playerControls.Player.Jump;
         jump.Enable();
+
     }
 
     private void OnDisable()
@@ -54,6 +56,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         player = GetComponent<Rigidbody>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
@@ -70,8 +73,17 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+       
         // update player movement
-        player.velocity = new Vector3(horizontalInput * moveSpeed, player.velocity.y, 0);
+        if (!gameManager.isLevelCompleted)
+        {
+            // update movement if level isn't completed
+            player.velocity = new Vector3(horizontalInput * moveSpeed, player.velocity.y, 0);
+        } else
+        {
+            player.velocity = new Vector3(0, 0, 0); // freeze the player once the level completion is triggered
+        }
+        
         // restart if below certain position
         if (player.position.y < -5f)
         {

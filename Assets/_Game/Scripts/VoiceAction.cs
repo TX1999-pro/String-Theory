@@ -10,7 +10,7 @@ public class VoiceAction : MonoBehaviour
 {
     //
     private KeywordRecognizer keywordRecognizer;
-    private Dictionary<string, Action> actions = new Dictionary<string, Action>();
+    public Dictionary<string, Action> actions = new();
 
     // character & player control
     [SerializeField] private PlayerController playerController;
@@ -19,7 +19,25 @@ public class VoiceAction : MonoBehaviour
     private Rigidbody player;
 
     public float moveSpeed = 3.0f;
+    public PlayerInputActions1 playerControls;
+    private InputAction toggleMicrophone;
 
+    private void Awake()
+    {
+        playerControls = GetComponent<PlayerController>().playerControls;
+
+    }
+    private void OnEnable()
+    {
+        toggleMicrophone = playerControls.Player.ToggleMic;
+        toggleMicrophone.Enable();
+
+    }
+
+    private void OnDisable()
+    {
+        toggleMicrophone.Disable();
+    }
 
     private void Start()
     {
@@ -47,6 +65,28 @@ public class VoiceAction : MonoBehaviour
             player.velocity = new Vector3(horizontalInput * playerController.moveSpeed, player.velocity.y, 0);
         }
         
+    }
+
+    public void ToggleMic(InputAction.CallbackContext context)
+    {
+        voiceActionEnabled = !voiceActionEnabled;
+        if (voiceActionEnabled)
+        {
+            Debug.Log("Mic On, listening");
+        }
+        else
+        {
+            Debug.Log("Mic Off.");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (keywordRecognizer != null)
+        {
+            keywordRecognizer.Stop();
+            keywordRecognizer.Dispose();
+        }
     }
 
     private void RecognizedSpeech(PhraseRecognizedEventArgs speech)

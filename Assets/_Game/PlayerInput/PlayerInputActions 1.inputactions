@@ -1,5 +1,5 @@
 {
-    "name": "PlayerInputActions",
+    "name": "PlayerInputActions 1",
     "maps": [
         {
             "name": "Player",
@@ -36,6 +36,15 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "3c1d16eb-09fa-493a-b5d4-e7e7209aaf34",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleMic",
+                    "type": "Button",
+                    "id": "00d2c621-52f9-45ae-b313-73c5f7529b53",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -238,6 +247,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d96b15be-4b84-4e2a-94aa-c965320a4b1f",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ToggleMic",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

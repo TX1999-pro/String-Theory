@@ -7,11 +7,13 @@ public class GameManager : MonoBehaviour
     public int score = 0;
     private int highScore = 0;
 
+    public bool isLevelCompleted = false;
     public float restartDelay = 1f;
     [SerializeField]private bool gameHasEnded = false;
-    public GameObject completeLevelUI;
+    // public GameObject completeLevelUI;
     public PlayerController playerController;
-    public GameObject compoleteLevelUI;
+    
+
     #region Singleton
     // Static instance of the Game Manager,
     // can be access from anywhere
@@ -22,11 +24,13 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
     public void CompleteLevel()
     {
-        Debug.Log("Level completed!");
-        completeLevelUI.SetActive(true);
-        playerController.enabled = false;
+        isLevelCompleted = true;
+        Invoke("LoadNextScene", 2); // delay 2 sec
+        //completeLevelUI.SetActive(true);
+        //playerController.enabled = false;
     }
 
     public void EndGame()
@@ -37,13 +41,25 @@ public class GameManager : MonoBehaviour
             Debug.Log("Game Over!");
             Invoke("RestartGame", restartDelay); // delay restart
         }
-
     }
 
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Debug.Log("Restarted");
+    }
+
+    public void LoadNextScene()
+    {
+        if (SceneManager.GetActiveScene().buildIndex + 1 < SceneManager.sceneCountInBuildSettings)
+            // check whether there is another scene
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+        else
+        {
+            Debug.Log("This is the last scene!");
+        }
     }
 
 
