@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         playerController = FindObjectOfType<PlayerController>();
+        Time.timeScale = 1f;
     }
 
     #endregion
@@ -28,7 +29,7 @@ public class GameManager : MonoBehaviour
     public void CompleteLevel()
     {
         isLevelCompleted = true;
-        Invoke("LoadNextScene", 2); // delay 2 sec
+        Invoke(nameof(LoadNextScene), 2); // delay 2 sec
         //completeLevelUI.SetActive(true);
         //playerController.enabled = false;
     }

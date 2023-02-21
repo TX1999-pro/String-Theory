@@ -21,13 +21,16 @@ public class PlayerController : MonoBehaviour
 
     private InputAction move;
     private InputAction jump;
-    private InputAction toggleMic;
+    private InputAction fire;
+    private InputAction toggleMic; // enable/disable voice action
+    private InputAction keepMoving; // move to the next destination
 
     public bool voiceActionEnabled = false;
 
     private void Awake()
     {
         gameInput = new PlayerInputActions1();
+        gameInput.Player.Fire.performed += context => Fire();
 
         //playerControls.Player.HorizontalMove.performed += ctx =>
         //{
@@ -40,13 +43,18 @@ public class PlayerController : MonoBehaviour
     {
         //gameInput.Enable();
         
-        // by events
+        // by specific actions for debugging
         move = gameInput.Player.Move;
-        move.Enable();
         jump = gameInput.Player.Jump;
-        jump.Enable();
+        fire = gameInput.Player.Fire;
         toggleMic = gameInput.Player.ToggleMic;
+        keepMoving = gameInput.Player.KeepMoving;
+
+        move.Enable();
+        jump.Enable();
         toggleMic.Enable();
+        keepMoving.Enable();
+        fire.Enable();
 
     }
 
@@ -56,18 +64,19 @@ public class PlayerController : MonoBehaviour
         move.Disable();
         jump.Disable();
         toggleMic.Disable();
+        keepMoving.Disable();
+        fire.Disable();
     }
 
     void Start()
     {
-        player = GetComponent<Rigidbody>();
+        player = this.GetComponent<Rigidbody>();
         gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
 
     private void FixedUpdate()
@@ -78,7 +87,8 @@ public class PlayerController : MonoBehaviour
         {
             // update movement if level isn't completed
             player.velocity = new Vector3(horizontalInput * moveSpeed, player.velocity.y, 0);
-        } else
+        } 
+        else
         {
             player.velocity = new Vector3(0, 0, 0); // freeze the player once the level completion is triggered
         }
@@ -93,7 +103,7 @@ public class PlayerController : MonoBehaviour
     public void Move(InputAction.CallbackContext context)
     {
         horizontalInput = context.ReadValue<Vector2>().x;
-        Debug.Log(horizontalInput);
+        //Debug.Log(horizontalInput);
     }
     public void Jump(InputAction.CallbackContext context)
     {
@@ -122,7 +132,25 @@ public class PlayerController : MonoBehaviour
         {
             // turn on
             voiceActionEnabled = !voiceActionEnabled;
-            Debug.Log("Voice Action Enable? : " + voiceActionEnabled.ToString());
+            Debug.Log("Voice Action Control: " + voiceActionEnabled.ToString());
+        }
+    }
+    public void Fire()
+    {
+        // do something to destroy the obstacle in front
+        // send a shock wave?
+        Debug.Log("Fire!");
+    }
+
+
+    public void KeepMoving(InputAction.CallbackContext btn)
+    {
+
+        if (btn.started)
+        {
+            // player will move forward(right) with constant velocity
+            horizontalInput = btn.ReadValue<Vector2>().x;
+            Debug.Log("Keep moving " + horizontalInput.ToString());
         }
     }
 
@@ -147,8 +175,17 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Entering the portal");
         }
+
     }
 
+    private void OnCollisionEnter(UnityEngine.Collision collision)
+    {
+        if (collision.gameObject.tag == "Obstacles")
+        {
+            horizontalInput = 0; // set horizontal velocity to 0
+            Debug.Log("Hit an obstacle");
+        }
+    }
 
 
 }

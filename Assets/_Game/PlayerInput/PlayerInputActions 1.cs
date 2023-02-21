@@ -71,6 +71,15 @@ public partial class @PlayerInputActions1 : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""KeepMoving"",
+                    ""type"": ""Value"",
+                    ""id"": ""64e3b049-dc01-4a3d-a7b2-a5685e2f9a87"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -84,6 +93,61 @@ public partial class @PlayerInputActions1 : IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""UDLR"",
+                    ""id"": ""26b6f403-c091-43eb-8505-663fb1423a65"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""d32fec6a-edb4-4f2b-b52d-4a4e9206c9a2"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""ddf0e6b3-2250-40c3-a3dc-c5aeacc461c1"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""518419fd-b9a6-4018-9223-801e15fdbbc6"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""281a2673-ac44-45cf-a23f-4a09de1b0717"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""WASD"",
@@ -282,6 +346,39 @@ public partial class @PlayerInputActions1 : IInputActionCollection2, IDisposable
                     ""action"": ""ToggleMic"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""NB"",
+                    ""id"": ""d1b4daeb-8a2e-449e-b645-78301ae5852e"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeepMoving"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""e05f5f7e-2b71-4c30-8d26-e7bd69e5ae52"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeepMoving"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""5f9e4ef0-6603-496b-a663-531816be3ea4"",
+                    ""path"": ""<Keyboard>/n"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeepMoving"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -872,6 +969,7 @@ public partial class @PlayerInputActions1 : IInputActionCollection2, IDisposable
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_ToggleMic = m_Player.FindAction("ToggleMic", throwIfNotFound: true);
+        m_Player_KeepMoving = m_Player.FindAction("KeepMoving", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -948,6 +1046,7 @@ public partial class @PlayerInputActions1 : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_ToggleMic;
+    private readonly InputAction m_Player_KeepMoving;
     public struct PlayerActions
     {
         private @PlayerInputActions1 m_Wrapper;
@@ -957,6 +1056,7 @@ public partial class @PlayerInputActions1 : IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @ToggleMic => m_Wrapper.m_Player_ToggleMic;
+        public InputAction @KeepMoving => m_Wrapper.m_Player_KeepMoving;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -981,6 +1081,9 @@ public partial class @PlayerInputActions1 : IInputActionCollection2, IDisposable
                 @ToggleMic.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleMic;
                 @ToggleMic.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleMic;
                 @ToggleMic.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleMic;
+                @KeepMoving.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnKeepMoving;
+                @KeepMoving.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnKeepMoving;
+                @KeepMoving.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnKeepMoving;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1000,6 +1103,9 @@ public partial class @PlayerInputActions1 : IInputActionCollection2, IDisposable
                 @ToggleMic.started += instance.OnToggleMic;
                 @ToggleMic.performed += instance.OnToggleMic;
                 @ToggleMic.canceled += instance.OnToggleMic;
+                @KeepMoving.started += instance.OnKeepMoving;
+                @KeepMoving.performed += instance.OnKeepMoving;
+                @KeepMoving.canceled += instance.OnKeepMoving;
             }
         }
     }
@@ -1161,6 +1267,7 @@ public partial class @PlayerInputActions1 : IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnToggleMic(InputAction.CallbackContext context);
+        void OnKeepMoving(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -38,12 +38,6 @@ public class VoiceAction : MonoBehaviour
         keywordRecognizer.Start();
     }
 
-    private void FixedUpdate()
-    {
-        player.velocity = new Vector3(horizontalInput * playerController.moveSpeed, player.velocity.y, 0);
-        
-    }
-
 
     private void OnDestroy()
     {

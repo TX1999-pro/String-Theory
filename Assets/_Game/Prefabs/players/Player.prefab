@@ -143,6 +143,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   moveSpeed: 5
+  voiceActionEnabled: 0
 --- !u!114 &1251365224412307567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,8 +264,8 @@ MonoBehaviour:
     m_ActionName: Player/Jump[/Keyboard/space,/Keyboard/j]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7298320603166828716}
-        m_TargetAssemblyTypeName: VoiceAction, Assembly-CSharp
+      - m_Target: {fileID: 1251365224412307568}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: ToggleMic
         m_Mode: 0
         m_Arguments:
@@ -277,6 +278,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 00d2c621-52f9-45ae-b313-73c5f7529b53
     m_ActionName: Player/ToggleMic[/Keyboard/l]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1251365224412307568}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: KeepMoving
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 64e3b049-dc01-4a3d-a7b2-a5685e2f9a87
+    m_ActionName: Player/GoNext[/Keyboard/g]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -295,7 +312,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 1251365224412307568}
-  voiceActionEnabled: 0
   moveSpeed: 3
 --- !u!1 &1251365224805869953
 GameObject:
