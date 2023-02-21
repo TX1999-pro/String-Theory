@@ -63,7 +63,7 @@ public class VoiceAction : MonoBehaviour
     }
     public void Jump()
     {
-        if (IsGrounded())
+        if (playerController.IsGrounded())
         {
             Debug.Log("Jumped!");
             if (playerController.superJumpsRemain > 0)
@@ -77,14 +77,6 @@ public class VoiceAction : MonoBehaviour
             }
             player.AddForce(Vector3.up * playerController.jumpForce, ForceMode.Impulse);
         }
-    }
-
-    private bool IsGrounded()
-    {
-        return Physics.OverlapSphere(playerController.groundCheckCollider.position, 0.1f,
-            playerController.groundLayer).Length != 0;
-        // checking if the groundchecktransform is colliding except with the player
-
     }
     private void Stop()
     {
