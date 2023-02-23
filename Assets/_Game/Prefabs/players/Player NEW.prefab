@@ -322,7 +322,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3353570835624715589, guid: e5b0c87dfd1bc1b4ba102b9d4f648243, type: 3}
       propertyPath: CollisionModule.collisionMessages
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5b0c87dfd1bc1b4ba102b9d4f648243, type: 3}

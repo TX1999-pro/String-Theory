@@ -120,4 +120,5 @@ public class VoiceAction : MonoBehaviour
         playerController.Fire();
         Debug.Log("Voice Fire!");
     }
+
 }

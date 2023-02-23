@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]private bool gameHasEnded = false;
     // public GameObject completeLevelUI;
     public PlayerController playerController;
+    public GameObject keywordList;
     
 
     #region Singleton
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
     {
         playerController = FindObjectOfType<PlayerController>();
         Time.timeScale = 1f;
+        keywordList.SetActive(playerController.voiceActionEnabled);
     }
 
     #endregion
@@ -77,5 +79,12 @@ public class GameManager : MonoBehaviour
             highScore = score;
             //print("New high score: " + highScore);
         }
+    }
+
+    public void toggleVoiceControl()
+    {
+        // on value changed
+        playerController.voiceActionEnabled = !playerController.voiceActionEnabled;
+        keywordList.SetActive(playerController.voiceActionEnabled);
     }
 }
