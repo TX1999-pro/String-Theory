@@ -14,33 +14,41 @@ public class VoiceAction : MonoBehaviour
 
     // character & player control
     [SerializeField] private PlayerController playerController;
-    private float horizontalInput;
+    //[SerializeField] private float horizontalInput;
     private Rigidbody player;
 
-    public float moveSpeed = 3.0f;
+    public float moveSpeed = 10.0f;
 
-    private void Start()
+    private void Awake()
     {
         player = GetComponent<Rigidbody>();
         playerController = gameObject.GetComponent<PlayerController>();
 
         // add voice actions to the dict
-        actions.Add("Forward", Forward);
         actions.Add("Stop", Stop);
+
+        actions.Add("Forward", Forward);
         actions.Add("Right", Forward);
+        actions.Add("Go right", Forward);
+        actions.Add("Move", Forward);
+        actions.Add("Move right", Forward);
+
         actions.Add("Back", Back);
         actions.Add("Left", Back);
         actions.Add("Go left", Back);
+        actions.Add("Move left", Back);
+
         actions.Add("Jump", Jump);
+        actions.Add("Fire", Fire);
 
         keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
         keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
         keywordRecognizer.Start();
     }
 
-
     private void OnDestroy()
     {
+        // dispose the keywordRecognizer when the player object is destroyed
         if (keywordRecognizer != null)
         {
             keywordRecognizer.Stop();
@@ -76,22 +84,40 @@ public class VoiceAction : MonoBehaviour
                 playerController.jumpForce = playerController.setJumpForce;
             }
             player.AddForce(Vector3.up * playerController.jumpForce, ForceMode.Impulse);
+            playerController.PlayShockWave(playerController.jumpWave.GetComponent<ParticleSystem>());
+            StartCoroutine(JumpOver());
         }
+    }
+    private IEnumerator JumpOver()
+    {
+        yield return new WaitForSeconds(0.5f);
+        // move right a bit
+        player.AddForce(Vector3.right * playerController.moveSpeed, ForceMode.Impulse);
     }
     private void Stop()
     {
         // stop from continuous dash
-        horizontalInput = 0;
+        playerController.horizontalInput = 0;
         Debug.Log("Stopped!");
+        playerController.running = false;
     }
     private void Forward()
     {
         player.AddForce(Vector3.right * playerController.moveSpeed, ForceMode.Impulse);
-        Debug.Log("Forward Action Done");
+        playerController.horizontalInput = 1;
+        Debug.Log("Moving right");
     }
     private void Back()
     {
         player.AddForce(Vector3.left * playerController.moveSpeed, ForceMode.Impulse);
-        Debug.Log("Back Action Done");
+        playerController.horizontalInput = -1;
+        Debug.Log("Moving left");
+    }
+
+    private void Fire()
+    {
+        // debug
+        playerController.Fire();
+        Debug.Log("Voice Fire!");
     }
 }

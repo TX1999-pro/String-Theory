@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private float horizontalInput;
+    public float horizontalInput;
     private Rigidbody player;
     [SerializeField] private GameManager gameManager;
     public bool isGrounded;
@@ -29,7 +29,8 @@ public class PlayerController : MonoBehaviour
     private InputAction toggleMic; // enable/disable voice action
     private InputAction keepMoving; // move to the next destination
 
-    public bool voiceActionEnabled = false;
+    public bool voiceActionEnabled = true;
+    public bool running = false;
 
     //Ray ray;
     //RaycastHit hit;
@@ -41,10 +42,12 @@ public class PlayerController : MonoBehaviour
     // public GameObject m_Projectile;    // this is a reference to your projectile prefab
     // public Transform m_SpawnTransform; // this is a reference to the transform where the prefab will spawn
     public ParticleSystem shockWave;
+    public ParticleSystem jumpWave;
 
 
     private void Awake()
     {
+        voiceActionEnabled = true;
         gameInput = new PlayerInputActions1();
         gameInput.Player.Fire.performed += context => Fire();
 
@@ -89,6 +92,7 @@ public class PlayerController : MonoBehaviour
         player = this.GetComponent<Rigidbody>();
         gameManager = FindObjectOfType<GameManager>();
         shockWave.Stop(); // turn fire VFX off
+        jumpWave.Stop();
     // ray = new Ray(transform.position, transform.right);
 }
 
@@ -128,7 +132,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed && IsGrounded())
         {
-            PlayShockWave(shockWave.GetComponent<ParticleSystem>());
+            PlayShockWave(jumpWave.GetComponent<ParticleSystem>());
             //Debug.Log("Jumped!");
             if (superJumpsRemain > 0)
             {
@@ -163,14 +167,9 @@ public class PlayerController : MonoBehaviour
         PlayShockWave(shockWave);
         Debug.Log("Fire!");
         //CheckForColliders();
-        DestoryObstaclesInFront();
     }
 
-    public void DestoryObstaclesInFront()
-    {
-        
-    }
-    private void PlayShockWave(ParticleSystem particles)
+    public void PlayShockWave(ParticleSystem particles)
     {
         particles.Stop();
         particles.Play();
@@ -229,12 +228,8 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Obstacles")
         {
-            if (!isGrounded) 
-            // don't stop if it drop on top of the obstacle
-            { 
                 horizontalInput = 0; // set horizontal velocity to 0
-                Debug.Log("Hit an obstacle");
-            }
+                //Debug.Log("Hit an obstacle");
         }
     }
 

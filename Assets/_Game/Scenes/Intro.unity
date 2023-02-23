@@ -4978,6 +4978,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2271645272193162364, guid: 5c3881f4606b14746852d4917a56431e, type: 3}
+      propertyPath: voiceActionEnabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2271645272193162365, guid: 5c3881f4606b14746852d4917a56431e, type: 3}
       propertyPath: m_RootOrder
       value: 2
